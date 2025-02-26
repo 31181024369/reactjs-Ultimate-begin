@@ -5,14 +5,18 @@ class MyComponent extends React.Component{
         address:'hoidanit',
         age:26
     }
-    handleClick(event){
+    handleClick=(event)=>{
         console.log("function click");
+        this.setState({
+            name:'longhoang',
+            age:Math.floor((Math.random()*100)+1)
+        })
     };
     render(){
         return (
             <div>
                my name is {this.state.name} and age :{this.state.age}
-               <button onClick={this.handleClick}>click</button>
+               <button onClick={(event)=>this.handleClick(event)}>click</button>
             </div>
         )
     }

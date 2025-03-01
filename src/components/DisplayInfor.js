@@ -1,41 +1,28 @@
 import React from "react";
 import './DisplayInfor.scss';
-class DisplayInfor extends React.Component{
-    state={
-        isShowListUser:true
-    }
-    handleShowHide=()=>{
-        this.setState({
-            isShowListUser:!this.state.isShowListUser
-        });
-    }
-    render(){
-        const {listUsers}=this.props;
+import logo from './../logo.svg';
+const DisplayInfor=(props)=>{
+    const {listUsers}=props;
         return (
             <div className="display-infor-container">
-            <div>
-                <span onClick={()=>{this.handleShowHide()}}>
-                    {this.state.isShowListUser===true?"Hide list user":"Show list user"}
-                </span>
-            </div>
-            {this.state.isShowListUser &&
-            <div>
+            {true &&
+            <>
                  {listUsers.map((items,index)=>{
-                    
                         return (
                             <div key={items.id} className={+items.age>18?"red":"green"}>
                                 <div>My name is {items.name}</div>
                                 <div>My age is {items.age}</div>
+                                <div>
+                                    <button onClick={()=>this.props.handleDeleteUser(items.id)}>delete</button>
+                                </div>
                                 <hr></hr>
                             </div>
                         )
-                  
             })}
 
-            </div>
+            </>
             }
             </div>
         );
-    }
 }
 export default DisplayInfor

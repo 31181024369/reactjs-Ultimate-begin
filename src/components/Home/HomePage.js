@@ -1,8 +1,8 @@
-const Home=()=>{
+const HomePage=(props)=>{
     return (
         <div>
             Homepage
         </div>
     );
 }
-export default Home;
+export default HomePage;

@@ -55,7 +55,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               }
             >
               Dashboard
-              <Link to="/admin" />
+              <Link to="/admins" />
             </MenuItem>
           
           </Menu>
@@ -65,7 +65,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
            
               icon={<FaRegLaughWink />}
             >
-              <MenuItem> Quản lý Users <Link to="/admin/manage-users" /></MenuItem>
+              <MenuItem> Quản lý Users <Link to="/admins/manage-users" /></MenuItem>
               <MenuItem> Quản lý bài Quiz</MenuItem>
               <MenuItem> Quản lý câu hỏi</MenuItem>
             </SubMenu>

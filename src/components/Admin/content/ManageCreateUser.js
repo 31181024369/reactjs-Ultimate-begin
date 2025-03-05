@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { FcPlus } from "react-icons/fc";
 import axios from 'axios';
+import { toast } from 'react-toastify';
 const ManageCreateUser=(props)=>{
   const {show,setShow}=props;
     const handleClose = () => {
@@ -34,6 +35,13 @@ const ManageCreateUser=(props)=>{
 
       }
     }
+    const validateEmail = (email) => {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
     const handleSubmitCreateUser= async()=>{
       // let data={
       //   email:email,
@@ -43,6 +51,16 @@ const ManageCreateUser=(props)=>{
       //   userImage:image
       // }
       // console.log("data",data);
+      const isValidateEmail=validateEmail(email);
+      if(!isValidateEmail){
+        toast.error('invalid email');
+        return ;
+      }
+      if(!password){
+        toast.error('invalid password');
+        return ;
+      }
+      
       const data = new FormData();
       data.append('email', email);
       data.append('password', password);
@@ -51,6 +69,14 @@ const ManageCreateUser=(props)=>{
       data.append('userImage', image);
       let res=await axios.post('http://localhost:8081/api/v1/participant',data);
       console.log("check data:",res);
+      if(res && res.data.EC===0){
+        toast.success(res.data.EM);
+        handleClose();
+      }
+      if(res && res.data.EC!==0){
+        toast.error(res.data.EM);
+        
+      }
     }
 
 

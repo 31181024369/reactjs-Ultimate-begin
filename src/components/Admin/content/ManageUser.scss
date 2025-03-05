@@ -1,0 +1,15 @@
+.manage-user-container{
+    padding: 10px;
+    .users-content{
+        .btn-add-new{
+            button{
+                border: none;
+                border-radius: 3px;
+            }
+        }
+    }
+    .title{
+        font-weight: 600;
+        font-size: 20px;
+    }
+}

@@ -6,9 +6,18 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { FcPlus } from "react-icons/fc";
+import axios from 'axios';
 const ManageCreateUser=(props)=>{
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+  const {show,setShow}=props;
+    const handleClose = () => {
+      setShow(false);
+      setEmail("");
+      setImage("")
+      setPassword("");
+      setPreviewImage("");
+      setRole("USER");
+      setUsername("");
+    }
     const handleShow = () => setShow(true);
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
@@ -25,14 +34,32 @@ const ManageCreateUser=(props)=>{
 
       }
     }
+    const handleSubmitCreateUser= async()=>{
+      // let data={
+      //   email:email,
+      //   password:password,
+      //   username:username,
+      //   role:role,
+      //   userImage:image
+      // }
+      // console.log("data",data);
+      const data = new FormData();
+      data.append('email', email);
+      data.append('password', password);
+      data.append('username', username);
+      data.append('role', role);
+      data.append('userImage', image);
+      let res=await axios.post('http://localhost:8081/api/v1/participant',data);
+      console.log("check data:",res);
+    }
 
 
 
     return (
         <>
-        <Button variant="primary" onClick={handleShow}>
+        {/* <Button variant="primary" onClick={handleShow}>
             Launch demo modal
-        </Button>
+        </Button> */}
          <Modal show={show} onHide={handleClose} size="xl" backdrop="static" className="model-add-user">
           <Modal.Header closeButton>
             <Modal.Title> Add new user</Modal.Title>
@@ -110,7 +137,7 @@ const ManageCreateUser=(props)=>{
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" >
+            <Button variant="primary" onClick={()=>handleSubmitCreateUser()} >
               Save Changes
             </Button>
           </Modal.Footer>

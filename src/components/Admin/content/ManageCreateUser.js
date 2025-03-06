@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import { FcPlus } from "react-icons/fc";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import {postCreateNewUser} from '../../../services/apiService';
 const ManageCreateUser=(props)=>{
   const {show,setShow}=props;
     const handleClose = () => {
@@ -60,22 +61,14 @@ const ManageCreateUser=(props)=>{
         toast.error('invalid password');
         return ;
       }
-      
-      const data = new FormData();
-      data.append('email', email);
-      data.append('password', password);
-      data.append('username', username);
-      data.append('role', role);
-      data.append('userImage', image);
-      let res=await axios.post('http://localhost:8081/api/v1/participant',data);
-      console.log("check data:",res);
-      if(res && res.data.EC===0){
-        toast.success(res.data.EM);
+      let data=await postCreateNewUser(email,password,username,role,image);
+      console.log("check data:",data);
+      if(data && data.EC===0){
+        toast.success(data.EM);
         handleClose();
       }
-      if(res && res.data.EC!==0){
-        toast.error(res.data.EM);
-        
+      if(data && data.EC!==0){
+        toast.error(data.EM);
       }
     }
 

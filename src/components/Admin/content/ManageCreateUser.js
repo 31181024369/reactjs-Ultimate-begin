@@ -72,8 +72,6 @@ const ManageCreateUser=(props)=>{
       }
     }
 
-
-
     return (
         <>
         {/* <Button variant="primary" onClick={handleShow}>

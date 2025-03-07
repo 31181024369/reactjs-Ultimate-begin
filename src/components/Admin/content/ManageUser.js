@@ -4,9 +4,12 @@ import { FcPlus } from "react-icons/fc";
 import './ManageUser.scss';
 import TableUser from "./TableUser";
 import { getAllUsers } from "../../../services/apiService";
+import ManageUpdateUser from "./ManageUpdateUser";
 const ManageUser=(props)=>{
     const [showModalCreateUser,setShowModalCreateUser]=useState(false);
+    const [showModalUpdateUser,setShowModalUpdateUser]=useState(false);
     const [listUsers,setListUsers]=useState([]);
+    const [dataUpdate,setDataUpdate]=useState({});
     useEffect(()=>{
         fetchListUsers();
     },[])
@@ -16,6 +19,11 @@ const ManageUser=(props)=>{
             setListUsers(res.DT);
         }
     }
+    const handleClickBtnUpdate=(user)=>{
+        setShowModalUpdateUser(true);
+        setDataUpdate(user);
+        console.log("data:",user);
+    }
 
     return (
         <div className="manage-user-container">
@@ -24,19 +32,26 @@ const ManageUser=(props)=>{
             </div>
             <div className="users-content">
                 <div className="btn-add-new">
-                    <button className="btn btn-primary" 
+                    <button className="btn btn-primary"
                     onClick={()=>setShowModalCreateUser(true)}
                     ><FcPlus></FcPlus>Add new users</button>
                 </div>
                 <div>
                     <div className="table-users-container">
-                        <TableUser listUsers={listUsers}></TableUser>
+                        <TableUser listUsers={listUsers}
+                        handleClickBtnUpdate={handleClickBtnUpdate}
+                        ></TableUser>
                     </div>
                     <ManageCreateUser
                     show={showModalCreateUser}
                     setShow={setShowModalCreateUser}
                     fetchListUsers={fetchListUsers}
                     ></ManageCreateUser>
+                    <ManageUpdateUser
+                     show={showModalUpdateUser}
+                     setShow={setShowModalUpdateUser}
+                     dataUpdate={dataUpdate}
+                    ></ManageUpdateUser>
                 </div>
             </div>
         </div>

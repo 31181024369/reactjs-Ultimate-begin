@@ -8,10 +8,10 @@ import Row from 'react-bootstrap/Row';
 import { FcPlus } from "react-icons/fc";
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import {postCreateNewUser} from '../../../services/apiService';
+import {postCreateNewUser,putUpdateUser} from '../../../services/apiService';
 import _ from 'lodash';
 const ManageUpdateUser=(props)=>{
-  const {show,setShow,fetchListUsers,dataUpdate}=props;
+  const {show,setShow,fetchListUsers,dataUpdate,resetUpdateData}=props;
     const handleClose = () => {
       setShow(false);
       setEmail("");
@@ -20,6 +20,7 @@ const ManageUpdateUser=(props)=>{
       setPreviewImage("");
       setRole("USER");
       setUsername("");
+      resetUpdateData();
     }
     const handleShow = () => setShow(true);
     const [email,setEmail]=useState("");
@@ -49,32 +50,8 @@ const ManageUpdateUser=(props)=>{
 
       }
     }
-    const validateEmail = (email) => {
-      return String(email)
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-    };
-    const handleSubmitCreateUser= async()=>{
-      // let data={
-      //   email:email,
-      //   password:password,
-      //   username:username,
-      //   role:role,
-      //   userImage:image
-      // }
-      // console.log("data",data);
-      const isValidateEmail=validateEmail(email);
-      if(!isValidateEmail){
-        toast.error('invalid email');
-        return ;
-      }
-      if(!password){
-        toast.error('invalid password');
-        return ;
-      }
-      let data=await postCreateNewUser(email,password,username,role,image);
+    const handleSubmitUpdateUser= async()=>{
+      let data=await putUpdateUser(dataUpdate.id,username,role,image);
       console.log("check data:",data);
       if(data && data.EC===0){
         toast.success(data.EM);
@@ -88,9 +65,6 @@ const ManageUpdateUser=(props)=>{
 
     return (
         <>
-        {/* <Button variant="primary" onClick={handleShow}>
-            Launch demo modal
-        </Button> */}
          <Modal show={show} onHide={handleClose} size="xl" backdrop="static" className="model-add-user">
           <Modal.Header closeButton>
             <Modal.Title> Update new user</Modal.Title>
@@ -170,7 +144,7 @@ const ManageUpdateUser=(props)=>{
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={()=>handleSubmitCreateUser()} >
+            <Button variant="primary" onClick={()=>handleSubmitUpdateUser()} >
               Save Changes
             </Button>
           </Modal.Footer>

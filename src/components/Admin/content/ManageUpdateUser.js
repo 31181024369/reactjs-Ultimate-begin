@@ -130,7 +130,6 @@ const ManageUpdateUser=(props)=>{
             onChange={(event)=>handleUploadImage(event)}
             />
         </Form.Group>
-       
       </Row>
       <Row className="mb-1">
       <Form.Group as={Col}  className='img-preview'>

@@ -121,7 +121,7 @@ const ManageCreateUser=(props)=>{
 
         <Form.Group as={Col}>
           <Form.Label>Role</Form.Label>
-          <Form.Select  
+          <Form.Select
           onChange={(event)=>setRole(event.target.value)}
           value={role}
         

@@ -5,11 +5,14 @@ import './ManageUser.scss';
 import TableUser from "./TableUser";
 import { getAllUsers } from "../../../services/apiService";
 import ManageUpdateUser from "./ManageUpdateUser";
+import ModalDeleteUser from "./ModalDeleteUser";
 const ManageUser=(props)=>{
     const [showModalCreateUser,setShowModalCreateUser]=useState(false);
     const [showModalUpdateUser,setShowModalUpdateUser]=useState(false);
     const [listUsers,setListUsers]=useState([]);
     const [dataUpdate,setDataUpdate]=useState({});
+    const [showModelDeleteUser,setShowModelDeleteUser]=useState(false);
+    const [dataDelete,setDataDelete]=useState({});
     useEffect(()=>{
         fetchListUsers();
     },[])
@@ -27,6 +30,10 @@ const ManageUser=(props)=>{
     const resetUpdateData=()=>{
         setDataUpdate({});
     }
+    const handleClickBtnDelete=(user)=>{
+        setShowModelDeleteUser(true);
+        setDataDelete(user);
+    }
 
     return (
         <div className="manage-user-container">
@@ -43,6 +50,7 @@ const ManageUser=(props)=>{
                     <div className="table-users-container">
                         <TableUser listUsers={listUsers}
                         handleClickBtnUpdate={handleClickBtnUpdate}
+                        handleClickBtnDelete={handleClickBtnDelete}
                         ></TableUser>
                     </div>
                     <ManageCreateUser
@@ -57,6 +65,12 @@ const ManageUser=(props)=>{
                      fetchListUsers={fetchListUsers}
                      resetUpdateData={resetUpdateData}
                     ></ManageUpdateUser>
+                    <ModalDeleteUser
+                    show={showModelDeleteUser}
+                    setShow={setShowModelDeleteUser}
+                    dataDelete={dataDelete}
+                    fetchListUsers={fetchListUsers}
+                    ></ModalDeleteUser>
                 </div>
             </div>
         </div>

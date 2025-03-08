@@ -10,7 +10,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import {postCreateNewUser} from '../../../services/apiService';
 const ManageCreateUser=(props)=>{
-  const {show,setShow,fetchListUsers}=props;
+  const {show,setShow,fetchListUsers, currentPage, setCurrentPage,fetchListUsersWithPaginate}=props;
     const handleClose = () => {
       setShow(false);
       setEmail("");
@@ -66,7 +66,9 @@ const ManageCreateUser=(props)=>{
       if(data && data.EC===0){
         toast.success(data.EM);
         handleClose();
-        await fetchListUsers()
+        //await fetchListUsers()
+        setCurrentPage(1);
+        await fetchListUsersWithPaginate(1);
       }
       if(data && data.EC!==0){
         toast.error(data.EM);

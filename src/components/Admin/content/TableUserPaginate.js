@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { getAllUsers } from '../../../services/apiService';
 import ReactPaginate from "react-paginate";
 const TableUserPaginate = (props) => {
-    const {listUsers,pageCount,fetchListUsersWithPaginate,handleClickBtnUpdate,handleClickBtnDelete}=props;
+    const {listUsers,pageCount,fetchListUsersWithPaginate,handleClickBtnUpdate,handleClickBtnDelete,currentPage, setCurrentPage}=props;
    
 
     const handlePageClick = (event) => {
        fetchListUsersWithPaginate(+event.selected+1);
+       setCurrentPage(+event.selected+1);
     };
     
     return (
@@ -73,7 +74,7 @@ const TableUserPaginate = (props) => {
                     containerClassName="pagination"
                     activeClassName="active"
                     renderOnZeroPageCount={null}
-                    // forcePage={currentPage-1}
+                    forcePage={currentPage-1}
             />
       </div>
             

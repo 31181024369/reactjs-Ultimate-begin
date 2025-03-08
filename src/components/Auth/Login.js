@@ -1,15 +1,28 @@
 import { useState } from 'react';
 import './Login.scss';
+import { useNavigate } from "react-router-dom";
+import { postLogin } from '../../services/apiService';
+import { toast } from 'react-toastify';
 const Login=(props)=>{
+    const navigate=useNavigate();
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
-    const handleLogin=()=>{
-        alert('login');
+    const handleLogin=async()=>{
+        let data=await postLogin(email,password);
+        console.log("data",data);
+        if(data && data.EC===0){
+            toast.success(data.EM);
+            navigate('/');
+        }
+        if(data && data.EC!==0){
+            toast.error(data.EM);
+        }
     }
     return (
         <div className="login-container">
             <div className="header">
                 Don't have an account yet?
+                <button >Sign up</button>
             </div>
             <div className="title col-4 mx-auto">
                 HoiDanIt
@@ -23,7 +36,7 @@ const Login=(props)=>{
                     <input type="email"
                      className="form-control"
                      value={email}
-                     onChange={(event)=>setEmail(event)}
+                     onChange={(event)=>setEmail(event.target.value)}
                      
                      ></input>
                 </div>
@@ -32,16 +45,16 @@ const Login=(props)=>{
                     <input type="password"
                      className="form-control"
                      value={password}
-                     onChange={(event)=>setPassword(event)}
+                     onChange={(event)=>setPassword(event.target.value)}
                   
                      ></input>
                 </div>
                 <span>Forget password?</span>
                 <div>
-                    <button onClick={()=>{handleLogin()}}><span>Login to HoiDanIT</span></button>
+                    <button onClick={()=>handleLogin()}><span>Login to HoiDanIT</span></button>
                 </div>
                 <div className='text-center'>
-                    <span className='back'>&#60;&#60;Go to Homepage</span>
+                    <span className='back' onClick={()=>{navigate('/')}}>&#60;&#60;Go to Homepage</span>
                 </div>
             </div>
         </div>

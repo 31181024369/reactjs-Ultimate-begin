@@ -3,14 +3,18 @@ import './Login.scss';
 import { useNavigate } from "react-router-dom";
 import { postLogin } from '../../services/apiService';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { doLogin } from '../../redux/action/userAction';
 const Login=(props)=>{
     const navigate=useNavigate();
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
+    const dispatch=useDispatch();
     const handleLogin=async()=>{
         let data=await postLogin(email,password);
         console.log("data",data);
         if(data && data.EC===0){
+            dispatch(doLogin(data));
             toast.success(data.EM);
             navigate('/');
         }
@@ -22,7 +26,7 @@ const Login=(props)=>{
         <div className="login-container">
             <div className="header">
                 Don't have an account yet?
-                <button >Sign up</button>
+                <button onClick={()=>{navigate('/register')}}>Sign up</button>
             </div>
             <div className="title col-4 mx-auto">
                 HoiDanIt

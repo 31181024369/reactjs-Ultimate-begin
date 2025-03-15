@@ -24,7 +24,7 @@ const ListQuiz=(props)=>{
                     <div className="card-body">
                         <h5 className="card-title">quiz {index+1}</h5>
                         <p className="card-text">{quiz.description}ss</p>
-                        <a onClick={()=>navigate(`/quiz/${quiz.id}`)} className="btn btn-primary">Go somewhere</a>
+                        <a onClick={()=>navigate(`/quiz/${quiz.id}`,{state:{quizTitle:quiz.description}})} className="btn btn-primary">Go somewhere</a>
                     </div>
                     </div>
                 )

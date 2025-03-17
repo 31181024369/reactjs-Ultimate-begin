@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./MangageQuiz.scss";
 import Select from 'react-select';
-
+import { postCreateNewQuiz } from "../../../../services/apiService";
+import { toast } from 'react-toastify';
 const options = [
     { value: 'EASY', label: 'EASY' },
     { value: 'MEDIUM', label: 'MEDIUM' },
@@ -10,10 +11,28 @@ const options = [
 const MangageQuiz=(props)=>{
     const [name,setName]=useState('');
     const [description,setDescription]=useState('');
-    const [style,setStyle]=useState('EASY');
+    const [type,setType]=useState('EASY');
     const [image,setImage]=useState(null);
-    const handleChangeFile=()=>{
-
+    const handleChangeFile=(event)=>{
+        if(event.target &&event.target.files && event.target.files[0]){
+            setImage(event.target.files[0]);
+        }
+    }
+    const handleSubmitQuiz=async()=>{
+        if(!name || !description)
+        {
+            toast.error('Name/Description is required');
+            return;
+        }
+        let res=await postCreateNewQuiz(description,name,type?.value,image);
+        if(res && res.EC===0){
+            toast.success(res.EM);
+            setName('');
+            setDescription('');
+            setImage(null);
+        }else{
+            toast.error(res.EM);
+        }
     }
 
     return (
@@ -28,13 +47,13 @@ const MangageQuiz=(props)=>{
                     <div className="form-floating mb-3">
                     <input type="text"
                      value={name}
-                     onChange={(event)=>setImage(event.target.value)}
+                     onChange={(event)=>setName(event.target.value)}
                       className="form-control"
                        placeholder="your quiz name" />
                     <label >Name</label>
                     </div>
                     <div className="form-floating">
-                        <input type="password"
+                        <input type="text"
                          className="form-control"
                          value={description}
                          onChange={(event)=>setDescription(event.target.value)}
@@ -42,7 +61,11 @@ const MangageQuiz=(props)=>{
                         <label >Description</label>
                     </div>
                     <div className="my-3">
-                    <Select value={style} options={options} placeholder={"Quiz type..."} />
+                    <Select
+                    defaultValue={type}
+                    onChange={setType}
+                     options={options}
+                     placeholder={"Quiz type..."} />
                     </div>
                     <div className="more-actions form-group">
                         <lable className="mb-1">Upload Image</lable>
@@ -51,6 +74,11 @@ const MangageQuiz=(props)=>{
                     </div>
 
                 </fieldset>
+            </div>
+            <div className="mt-3">
+                <button
+                onClick={()=>handleSubmitQuiz()}
+                 className="btn btn-warning">Save</button>
             </div>
         </div>
     );

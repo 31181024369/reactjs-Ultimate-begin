@@ -3,6 +3,8 @@ import "./MangageQuiz.scss";
 import Select from 'react-select';
 import { postCreateNewQuiz } from "../../../../services/apiService";
 import { toast } from 'react-toastify';
+import TableQuiz from "./TableQuiz";
+import Accordion from 'react-bootstrap/Accordion';
 const options = [
     { value: 'EASY', label: 'EASY' },
     { value: 'MEDIUM', label: 'MEDIUM' },
@@ -37,11 +39,11 @@ const MangageQuiz=(props)=>{
 
     return (
         <div className="quiz-container">
-            <div className="title">
-                MangageQuiz
-            </div>
-            <hr></hr>
-            <div className="add-new">
+             <Accordion defaultActiveKey="0">
+      <Accordion.Item eventKey="0">
+        <Accordion.Header>MangageQuiz</Accordion.Header>
+        <Accordion.Body>
+        <div className="add-new">
                 <fieldset className='border rounded-3 p-3'>
                     <legend>Add new Quiz:</legend>
                     <div className="form-floating mb-3">
@@ -72,13 +74,19 @@ const MangageQuiz=(props)=>{
                         <input type="file" onChange={(event)=>handleChangeFile(event)} className="form-control"  />
 
                     </div>
+                    <div className="mt-3">
+                        <button
+                        onClick={()=>handleSubmitQuiz()}
+                        className="btn btn-warning">Save</button>
+                    </div>
 
                 </fieldset>
             </div>
-            <div className="mt-3">
-                <button
-                onClick={()=>handleSubmitQuiz()}
-                 className="btn btn-warning">Save</button>
+        </Accordion.Body>
+      </Accordion.Item>
+            </Accordion>
+            <div className="list-detail">
+                <TableQuiz></TableQuiz>
             </div>
         </div>
     );

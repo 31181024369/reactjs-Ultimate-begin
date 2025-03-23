@@ -9,7 +9,7 @@ import _ from 'lodash';
 import { toast } from 'react-toastify';
 import Lightbox from "react-awesome-lightbox";
 import Question from "../../../User/Question";
-import { getAllQuizForAdmin, getQuizWithQA, postCreateNewAnswerForQuestion, postCreateNewQuestionForQuiz } from "../../../../services/apiService";
+import { getAllQuizForAdmin, getQuizWithQA, postCreateNewAnswerForQuestion, postCreateNewQuestionForQuiz, postUpsertQA } from "../../../../services/apiService";
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
@@ -176,6 +176,12 @@ const QuizQA=(props)=>{
 
         }
     }
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
     const handleSubmitQuestionForQuiz=async()=>{
         if(_.isEmpty(selectedQuiz)){
             toast.error("Please choose a Quiz");
@@ -211,32 +217,27 @@ const QuizQA=(props)=>{
             toast.error(`Not empty description for Question ${indexQ1+1}`);
             return;
         }
-        for(const question of questions){
-            const q=await postCreateNewQuestionForQuiz(
-                +selectedQuiz.value,
-                question.description,
-                question.imageFile);
-                for(const answer of question.answers){
-                    await postCreateNewAnswerForQuestion(
-                        answer.description,answer.isCorrect,q.DT.id
-                    )
-                }
+        let questionsClone=_.cloneDeep(questions);
+        for(let i=0;i<questionsClone.length;i++){
+            if(questionsClone[i].imageFile){
+                questionsClone[i].imageFile=await toBase64(questionsClone[i].imageFile)
+            }
         }
-        toast.success('Create question and answers success');
-        setQuestions(initQuestions);
-    //     await Promise.all(questions.map(async (question)=>{
-    //     const q=await postCreateNewQuestionForQuiz(
-    //         +selectedQuiz.value,
-    //         question.description,
-    //         question.imageFile);
-    //     await Promise.all(question.answers.map(async(answer)=>{
-    //         await postCreateNewAnswerForQuestion(
-    //             answer.description,answer.isCorrect,q.DT.id
-    //         )
-    //     }))
-    //     console.log(">>>check q:",q);
-    //    }));
+
+        let res=await postUpsertQA({
+            quizId: selectedQuiz.value,
+            questions: questionsClone
+        });
+        console.log("questionclone: ", questionsClone);
+        if(res && res.EC===0){
+            toast.success(res.EM);
+            fetchQuizWithQA();
+        }
+      
+        //setQuestions(initQuestions);
+
     }
+    console.log("question: ", questions);
     return (
         <div className="questions-container">
             <div className="add-new-question">

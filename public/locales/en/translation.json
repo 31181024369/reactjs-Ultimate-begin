@@ -1,0 +1,11 @@
+{
+   
+        "homepage":{
+            "title1":"There's a better way to ask",
+            "title2":"Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+              "title3": {
+                "login": "Get's start.It's free"
+             }
+        }
+    
+}

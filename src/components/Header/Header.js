@@ -7,6 +7,7 @@ import { NavLink,useNavigate } from "react-router-dom";
 import { logout } from '../../services/apiService';
 import { toast } from 'react-toastify';
 import { doLogout } from '../../redux/action/userAction';
+import Language from './Language';
 const Header=()=>{
   const isAuthenticated=useSelector(state=>state.user.isAuthenticated);
   const account=useSelector(state=>state.user.account);
@@ -57,10 +58,7 @@ const Header=()=>{
               </NavDropdown.Item>
             </NavDropdown>
             }
-             <NavDropdown title="Việt nam" id="basic-nav-dropdown2" className="languages">
-              <NavDropdown.Item href="">English</NavDropdown.Item>
-              <NavDropdown.Item href="">Việt Nam</NavDropdown.Item>
-            </NavDropdown>
+           <Language></Language>
           </Nav>
         </Navbar.Collapse>
       </Container>

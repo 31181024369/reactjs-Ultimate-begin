@@ -19,7 +19,7 @@ const Question=(props)=>{
         <>
         {data.image ?
             <div className='q-image'>
-                <img 
+                <img
                 onClick={()=>setIsPreviewImage(true)}
                 src={`data:image/png;base64,${data.image}`}/>
                  {isPreviewImage===true && <Lightbox

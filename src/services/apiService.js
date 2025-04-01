@@ -88,7 +88,10 @@ const logout=(email,refresh_token)=>{
         email,refresh_token
     });
 }
+const getOverview=()=>{
+    return axios.get(`api/v1/overview`);
+}
 export {postCreateNewUser,getAllUsers,putUpdateUser,deleteUser,getUserWithPaginate,
     postLogin,postRegister,getQuizByUser,getDataQuiz,postSubmitQuiz,postCreateNewQuiz,
     getAllQuizForAdmin,postCreateNewQuestionForQuiz,postCreateNewAnswerForQuestion,
-    postAssignQuiz,getQuizWithQA,postUpsertQA,logout}
+    postAssignQuiz,getQuizWithQA,postUpsertQA,logout,getOverview}

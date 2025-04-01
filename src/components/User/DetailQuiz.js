@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { getDataQuiz, postSubmitQuiz } from "../../services/apiService";
-
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import "./DetailQuiz.scss";
 import _ from 'lodash';
 import Question from "./Question";
@@ -110,6 +110,12 @@ const DetailQuiz=(props)=>{
         console.log("data:",dataQuizClone);
     }
     return (
+        <>
+         <Breadcrumb className="quiz-detail-new-header">
+            <NavLink className="breadcrumb-item" to="/">Home</NavLink>
+            <NavLink className="breadcrumb-item" to="/users">User</NavLink>
+            <Breadcrumb.Item active>Quiz</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="detail-quiz-container">
             <div className="left-content">
                 <div className="title">
@@ -139,6 +145,8 @@ const DetailQuiz=(props)=>{
             dataModalResult={dataModalResult}
             ></ModalResult>
         </div>
+        </>
+        
     );
 }
 export default DetailQuiz;

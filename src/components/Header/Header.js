@@ -7,12 +7,16 @@ import { NavLink,useNavigate } from "react-router-dom";
 import { logout } from '../../services/apiService';
 import { toast } from 'react-toastify';
 import { doLogout } from '../../redux/action/userAction';
+import { FaReact } from "react-icons/fa";
 import Language from './Language';
+import Profile from './Profile';
+import { useState } from 'react';
 const Header=()=>{
   const isAuthenticated=useSelector(state=>state.user.isAuthenticated);
   const account=useSelector(state=>state.user.account);
   const dispatch=useDispatch();
   const navigate=useNavigate();
+  const [isShowModalProfile,setIsShowModalProfile]=useState(false);
   const handleLogin=()=>{
     navigate('/login');
   }
@@ -30,9 +34,14 @@ const Header=()=>{
     }
   }
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <>
+     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <NavLink to="/" className='navbar-brand'>Hỏi Dân IT</NavLink>
+        <NavLink to="/" className='navbar-brand'>
+        <span className="brand-icon">
+        <FaReact />
+        </span>
+        <span>Hỏi Dân IT</span></NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -52,7 +61,7 @@ const Header=()=>{
             :
             <NavDropdown title="Settings" id="basic-nav-dropdown">
               {/* <NavDropdown.Item href="">Log in</NavDropdown.Item> */}
-              <NavDropdown.Item href="">Profile</NavDropdown.Item>
+              <NavDropdown.Item href="" onClick={()=>setIsShowModalProfile(true)}>Profile</NavDropdown.Item>
               <NavDropdown.Item href="" onClick={()=>handleLogout()}>
                 Log out
               </NavDropdown.Item>
@@ -63,6 +72,10 @@ const Header=()=>{
         </Navbar.Collapse>
       </Container>
     </Navbar>
+    <Profile show={isShowModalProfile} setShow={setIsShowModalProfile}>
+    </Profile>
+    </>
+   
   );
 }
 
